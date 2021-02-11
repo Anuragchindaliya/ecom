@@ -44,13 +44,24 @@ class ProductController extends Controller
 
     static function cartItem()
     {
-        $userId=Session::get('user')['id'];
+        // $userId=Session::get('user')['id'];
+        
+        $userId=session::get('user')['id']; 
         return Cart::where('user_id',$userId)->count();
     }
 
     function cartList()
     {
-        $userId=session::get('user')['id'];       
+        if(session()->has('user')){
+            $userId=session::get('user')['id']; 
+        }
+        else
+        {
+            $userId=null;
+            redirect('/login');
+        }
+            // $userId=session::get('user')['id']; 
+              
         $product=db::table('cart')
         ->join('products','cart.product_id','=','products.id')
         ->where('cart.user_id',$userId)
@@ -101,6 +112,26 @@ class ProductController extends Controller
         // ->sum('products.price');
 
         // return view('ordernow',['total'=>$total]);
+    }
+
+    function myOrders()
+    {
+        if(session()->has('user')){
+            $userId=session::get('user')['id']; 
+        }
+        else
+        {
+            $userId=null;
+            return redirect('/login');
+        }
+        $userId=Session::get('user')['id'];
+        $products= db::table('orders')
+        ->join('products','orders.product_id','=','products.id')
+        ->where('orders.user_id',$userId)
+        ->get();
+
+        return view('myorders',['products'=>$products]);
+        
     }
 
 }

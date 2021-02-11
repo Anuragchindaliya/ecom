@@ -1,6 +1,15 @@
 <?php 
   use App\Http\Controllers\ProductController;
-  $total=ProductController::cartItem();
+  $total=0;
+  if(Session::has('user'))
+  {
+    $total=ProductController::cartItem();
+    
+  }
+//   @if(session()->has('user_signup'))
+//     session()->get('user_signup')
+// @endif
+  
 ?>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -19,12 +28,12 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Orders</a></li>
+        <li><a href="myorders">Orders</a></li>
         
       </ul>
       <form class="navbar-form navbar-left" method="get" action="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search" name="query">
+          <input type="text" class="form-control" placeholder="Search" name="query" value="">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
@@ -41,6 +50,7 @@
         </li>
         @else
         <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
         @endif
         
       </ul>
