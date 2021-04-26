@@ -1,5 +1,6 @@
 <?php 
   use App\Http\Controllers\ProductController;
+  //FOR CART ITEM COUNT
   $total=0;
   if(Session::has('user'))
   {
